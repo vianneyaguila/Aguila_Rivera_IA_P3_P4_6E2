@@ -1,3 +1,19 @@
+# Este programa permite visualizar paso a paso cómo funciona el algoritmo de Prim para construir el Árbol de Expansión Mínima (Minimum Spanning Tree - MST) de un grafo no dirigido y ponderado.
+#
+# - Un grafo dibujado en una ventana gráfica.
+# - Un botón para avanzar paso a paso en la ejecución del algoritmo.
+# - Cada vez que se selecciona una arista, se muestra:
+#   > Un mensaje en consola indicando qué arista se agregó.
+#   > Un mensaje en pantalla (interfaz) describiendo el paso.
+# - Las aristas del MST se muestran en color verde.
+#
+# - Se parte desde un nodo inicial (por defecto 'A').
+# - Se utiliza una cola de prioridad (heapq) para seleccionar 
+#   la arista de menor peso conectando un nodo visitado con uno no visitado.
+# - Se agregan aristas al árbol mientras haya nodos no visitados.
+# - Cada paso se muestra gráficamente y se describe en consola.
+
+
 import tkinter as tk # Para crear la interfaz gráfica
 from tkinter import messagebox # Para mostrar mensajes emergentes
 import networkx as nx # Permite crear y trabajar con graficos 
@@ -92,4 +108,4 @@ if __name__ == "__main__":
     root.mainloop()
 # Crea la ventana principal root
 # Inicia la aplicación PrimApp
-# root.mainloop() mantiene la aplicación abierta y esperando clics
+# root.mainloop() mantiene la aplicación abierta y esperando clicks
