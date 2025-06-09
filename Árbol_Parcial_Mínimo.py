@@ -45,21 +45,21 @@ class PrimApp: #Se crea una clase para organizar la aplicación y sus elementos
             for vecino, peso in vecinos:
                 self.graph.add_edge(nodo, vecino, weight=peso) #Lee el diccionario grafo y crea las aristas en networkx
 
-    def draw_graph(self, descripcion=""):
-        self.ax.clear()
-        edge_colors = ['green' if (u, v) in self.mst_edges or (v, u) in self.mst_edges else 'black' for u, v in self.graph.edges()]
-        weights = nx.get_edge_attributes(self.graph, 'weight')
+    def draw_graph(self, descripcion=""): # Este método actualiza el gráfico
+        self.ax.clear() # Limpia el gráfico anterior 
+        edge_colors = ['green' if (u, v) in self.mst_edges or (v, u) in self.mst_edges else 'black' for u, v in self.graph.edges()] # Colorea las aristas que forman parte del MST en verde, el resto en negro
+        weights = nx.get_edge_attributes(self.graph, 'weight') # Obtiene los pesos para mostrarlos en pantalla
         nx.draw(self.graph, self.pos, with_labels=True, edge_color=edge_colors, node_color='skyblue', ax=self.ax)
-        nx.draw_networkx_edge_labels(self.graph, self.pos, edge_labels=weights, ax=self.ax)
+        nx.draw_networkx_edge_labels(self.graph, self.pos, edge_labels=weights, ax=self.ax) # Dibuja el gráfico con nudos, aristas y etiquetas
         self.canvas.draw()
-        self.label_step.config(text=descripcion)
+        self.label_step.config(text=descripcion) # Alctualiza el gráfico y el mensaje descriptivo debajo
 
-    def step_prim(self):
-        while self.edges_queue:
-            peso, desde, hasta = heapq.heappop(self.edges_queue)
+    def step_prim(self): # Se ejecuta al presionar el botón siguiente paso
+        while self.edges_queue: 
+            peso, desde, hasta = heapq.heappop(self.edges_queue) # Obtiene la arista de menor peso que aún no ha sido usada
             if hasta in self.visited:
-                continue
-            self.visited.add(hasta)
+                continue # Si el nudo ya fue visitado, lo salta
+            self.visited.add(hasta) # Marca el nodo como visitado 
 
             if desde:
                 self.mst_edges.append((desde, hasta))
@@ -67,23 +67,29 @@ class PrimApp: #Se crea una clase para organizar la aplicación y sus elementos
                 print(descripcion)
             else:
                 descripcion = f"Iniciando desde el nodo: {hasta}"
-                print(descripcion)
+                print(descripcion) # Si ahy un nudo desde, se agrega la arista al árbol 
+                # Muestra un mensaje (en consola y en pantalla)
 
             for vecino, p in grafo[hasta]:
                 if vecino not in self.visited:
-                    heapq.heappush(self.edges_queue, (p, hasta, vecino))
+                    heapq.heappush(self.edges_queue, (p, hasta, vecino)) # Agrega a la cola los aristas que parten del nuevo nodo visitado
 
             self.draw_graph(descripcion)
-            return  # Salir para hacer paso a paso
+            return  # Salir para hacer paso a paso 
+        # Actualiza el gráfico y sale para permitir el siguiente paso
 
         # Cuando ya se ha terminado el MST
         self.draw_graph("Árbol de expansión mínima completado.")
         print("Árbol de expansión mínima completado.")
         messagebox.showinfo("Finalizado", "El árbol ha sido generado completamente.")
         self.next_button.config(state="disabled")
+        # Cuando no queden más aristas, muestras el mensaje final, actualiza la interfaz y desactiva el botón
 
 # Ejecutar la app
 if __name__ == "__main__":
     root = tk.Tk()
     app = PrimApp(root)
     root.mainloop()
+# Crea la ventana principal root
+# Inicia la aplicación PrimApp
+# root.mainloop() mantiene la aplicación abierta y esperando clics
